@@ -1,19 +1,26 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import AppNavigation from './navigation/AppNavigation';
+import { Provider } from 'react-redux';
+import ReduxThunk from 'redux-thunk';
+import { enableScreens } from 'react-native-screens';
+enableScreens();
+
+import hydrantsReducer from './store/reducers/hydrants';
+import usersReducer from './store/reducers/users';
+
+const rootReducer = combineReducers({
+  hydrants: hydrantsReducer,
+  users: usersReducer
+});
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+    <Provider store={store}>
+      <AppNavigation />
+    </Provider>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
