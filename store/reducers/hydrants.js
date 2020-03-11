@@ -4,7 +4,7 @@ const initialState = {
     hydrants: []
 }
 
-export default (state = initialState, action) => {
+const hydrantsReducer =  (state = initialState, action) => {
     switch (action.type) {
         case SET_HYDRANTS:
             return {
@@ -14,3 +14,5 @@ export default (state = initialState, action) => {
     }
     return state;
 }
+
+export default hydrantsReducer;
