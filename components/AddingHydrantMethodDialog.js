@@ -1,16 +1,35 @@
-import React from "react";
-import { View, Button, TouchableHighlight, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
+import React, { useCallback } from "react"; 
+import { View, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
+
 import Colors from "../constants/Colors";
+import * as hydrantActions from '../store/actions/hydrants';
+import * as messageActions from '../store/actions/message';
+
 const AddingHydrantMethodDialog = props => {
+    const dispatch = useDispatch();
+    const userPosition = useSelector(state => state.user.userPosition);
+
+    const addHydrantPositionHandler = useCallback(async () => {
+        if (!userPosition) {
+            dispatch(messageActions.setMessage("Location not setted"));
+        }
+        try {
+            await dispatch(hydrantActions.addHydrantPosition(userPosition));
+        } catch (err) {
+             throw err 
+        }
+    }, [dispatch, userPosition]);
 
     return (
-        props.visible ?
             <View style={styles.dim}>
                 <View style={styles.container}>
                     <Text style={styles.header}>Jak chcesz dodać hydrant?</Text>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => { }}>
+                        onPress={addHydrantPositionHandler}>
+                            <Ionicons name="md-locate" style={styles.iconStyle} size={24} color={Colors.iosBlue}/>
                         <Text
                             style={{
                                 ...styles.buttonText,
@@ -21,6 +40,7 @@ const AddingHydrantMethodDialog = props => {
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => { }}>
+                        <Ionicons name="md-camera" style={styles.iconStyle} size={24} color={Colors.iosBlue}/>
                         <Text
                             style={{
                                 ...styles.buttonText,
@@ -29,16 +49,17 @@ const AddingHydrantMethodDialog = props => {
                         >Zrób zdjecie</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={ styles.button}
+                        style={ styles.button }
                         onPress={() => { }}>
+                        <Ionicons name="md-images" style={styles.iconStyle} size={24} color={Colors.iosBlue}/>
                         <Text
                             style={{
                                 ...styles.buttonText,
                                 color: Colors.iosBlue
                             }}
-                        >Zdjęcie GPS</Text>
+                        >Zdjęcie EXIF</Text>
                     </TouchableOpacity>
-                </View></View> : null
+                </View></View> 
     );
 
 }
@@ -77,12 +98,17 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 36,
         backgroundColor: "transparent",
+        display: 'flex',
+        flexDirection: 'row',
         justifyContent: "center",
         alignItems: "center"
     },
     buttonText: {
         fontSize: 18,
         color: "#ffffff"
+    },
+    iconStyle: {
+        marginRight: 8
     }
 })
 export default AddingHydrantMethodDialog;

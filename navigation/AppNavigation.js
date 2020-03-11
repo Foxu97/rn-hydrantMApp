@@ -5,8 +5,6 @@ import { createStackNavigator } from 'react-navigation-stack';
 import MapScreen from '../screens/MapScreen';
 import Colors from '../constants/Colors';
 
-import AskForHydrantImage from '../components/AskForHydrantImageModal'
-
 const defaultNavigationOptions = {
     defaultNavigationOptions: {
         headerStyle: {
@@ -17,8 +15,7 @@ const defaultNavigationOptions = {
 }
 
 const AppNavigator = createStackNavigator({
-    Map: MapScreen,
-    Ask: AskForHydrantImage
+    Map: MapScreen
 }, defaultNavigationOptions);
 
 export default createAppContainer(AppNavigator);

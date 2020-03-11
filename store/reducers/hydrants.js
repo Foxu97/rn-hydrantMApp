@@ -1,4 +1,4 @@
-import { SET_HYDRANTS } from '../actions/hydrants';
+import { SET_HYDRANTS, ADD_HYDRANT } from '../actions/hydrants';
 
 const initialState = {
     hydrants: []
@@ -10,6 +10,8 @@ const hydrantsReducer =  (state = initialState, action) => {
             return {
                 hydrants: [...action.hydrants]
             }
+         
+            
 
     }
     return state;

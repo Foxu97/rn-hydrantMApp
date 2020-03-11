@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, StyleSheet, Dimensions, ToastAndroid, Button, Modal, Text } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MapView from 'react-native-maps';
 
 import * as Location from 'expo-location';
@@ -8,46 +8,35 @@ import * as Permissions from 'expo-permissions';
 
 
 import Colors from '../constants/Colors';
-
-import AddingHydrantMethodDialog from './AddingHydrantMethodDialog';
 import CircleButton from '../components/CircleButton';
+
 import * as hydrantsActions from '../store/actions/hydrants';
+import * as userActions from '../store/actions/user';
 
 
 
 
 const Map = props => {
     console.log("Map component render")
-    const [hydrants, setHydrants] = useState([]);
     const [region, setRegion] = useState();
     const [userPosition, setUserPosition] = useState();
-    //const [modalVisible, setModalVisible] = useState(false);
-
+    const hydrants = useSelector(state => state.hydrants.hydrants)
     const dispatch = useDispatch();
+    
 
     const onRegionChange = (region) => {
         setRegion(region);
     }
-    const addNewHydrant = () => {
 
-    }
-    const fetchHydrants = async (lat, lng) => {
+    const loadHydrants = useCallback(async (lat, lng) => {
         try {
-            const res = await fetch(`http://192.168.74.254:8081/hydrant/?latitude=${lat}&longitude=${lng}.json`);
-            const json = await res.json();
-            if (json.data) {
-                dispatch(hydrantsActions.setHydrants(json.data));
-                setHydrants(json.data);
-            }
-            ToastAndroid.show(json.message.toString(), ToastAndroid.LONG)
-
+            await dispatch(hydrantsActions.fetchHydrants(lat, lng))
         }
         catch (err) {
-            ToastAndroid.show(err.toString(), ToastAndroid.LONG)
+            throw err
         }
+    }, [dispatch])
 
-
-    }
     const _getLocationAsync = async () => {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
         if (status !== 'granted') {
@@ -57,8 +46,10 @@ const Map = props => {
         const location = await Location.getCurrentPositionAsync({
             accuracy: 5
         });
-        await fetchHydrants(location.coords.latitude, location.coords.longitude);
 
+        await loadHydrants(location.coords.latitude, location.coords.longitude)
+        dispatch(userActions.setUserPosition({latitude: location.coords.latitude, longitude: location.coords.longitude}));
+        
         setUserPosition({
             latitude: location.coords.latitude,
             longitude: location.coords.longitude,
@@ -73,7 +64,7 @@ const Map = props => {
     };
     useEffect(() => {
         _getLocationAsync();
-    }, []);
+    }, [dispatch, loadHydrants]);
 
     return (
         <View style={styles.container}>
@@ -101,9 +92,12 @@ const Map = props => {
             <CircleButton
                 styles={{
                     top: 8,
-                    backgroundColor: Colors.iosBlue
+                    backgroundColor: Colors.iosBlue,
+                    height: 48,
+                    width: 48
                 }}
                 icon="md-locate"
+                iconSize={28}
                 onPressButton={_getLocationAsync}
             />
         </View>
@@ -113,7 +107,6 @@ const Map = props => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: "center"
     },
     mapStyle: {

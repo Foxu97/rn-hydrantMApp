@@ -9,7 +9,7 @@ const CircleButton = props => {
         <TouchableOpacity 
             style={{ ...styles.container, ...props.styles}}
             onPress={props.onPressButton}>
-        <Ionicons name={props.icon} size={36} color="white" />
+        <Ionicons name={props.icon} size={props.iconSize} color="white" />
         </TouchableOpacity>
     );
 }

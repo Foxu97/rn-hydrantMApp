@@ -1,25 +1,29 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, Suspense } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-
-import AddingHydrantMethodDialog from '../components/AddingHydrantMethodDialog';
-import CircleButton from '../components/CircleButton';
+import CircleButton from '../components/CircleButton'; 
 import Map from '../components/Map';
+
+
 
 const MapScreen = props => {
     const [modalVisible, setModalVisible] = useState(false);
+    const Dialog = React.lazy(() => import('../components/AddingHydrantMethodDialog'));
+
     return (
         <View style={styles.container}>
             {useMemo(()=> (
                 <Map />
             ), [])}
-            <AddingHydrantMethodDialog
-                visible={modalVisible} />
+            {modalVisible ? <Suspense fallback={null}>
+                <Dialog />
+            </Suspense> : null}
             <CircleButton
                 styles={{
                     bottom: 176
                 }}
-                icon="md-add"
+                icon={modalVisible ? "md-return-left" : "md-add"}
+                iconSize={34}
                 onPressButton={() => {
                     const visibility = !modalVisible;
                     setModalVisible(visibility);
