@@ -2,6 +2,8 @@ import React, { useCallback } from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
+//import { useNavigation } from '@react-navigation/native';
+
 
 import Colors from "../constants/Colors";
 import * as hydrantActions from '../store/actions/hydrants';
@@ -10,6 +12,7 @@ import * as messageActions from '../store/actions/message';
 const AddingHydrantMethodDialog = props => {
     const dispatch = useDispatch();
     const userPosition = useSelector(state => state.user.userPosition);
+    //const navigation = useNavigation();
 
     const addHydrantPositionHandler = useCallback(async () => {
         if (!userPosition) {
@@ -39,14 +42,14 @@ const AddingHydrantMethodDialog = props => {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => { }}>
+                        onPress={() => {props.navigation.navigate("WithImageScreen")} }>
                         <Ionicons name="md-camera" style={styles.iconStyle} size={24} color={Colors.iosBlue}/>
                         <Text
                             style={{
                                 ...styles.buttonText,
                                 color: Colors.iosBlue
                             }}
-                        >Zrób zdjecie</Text>
+                        >Ze zdjęciem</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={ styles.button }

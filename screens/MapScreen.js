@@ -7,16 +7,21 @@ import Map from '../components/Map';
 
 
 const MapScreen = props => {
+    
     const [modalVisible, setModalVisible] = useState(false);
     const Dialog = React.lazy(() => import('../components/AddingHydrantMethodDialog'));
 
     return (
         <View style={styles.container}>
             {useMemo(()=> (
-                <Map />
+                <Map 
+                    
+                />
             ), [])}
             {modalVisible ? <Suspense fallback={null}>
-                <Dialog />
+                <Dialog 
+                    navigation={props.navigation}
+                />
             </Suspense> : null}
             <CircleButton
                 styles={{
@@ -38,5 +43,7 @@ const styles = StyleSheet.create({
         flex: 1
     }
 })
+
+
 
 export default MapScreen;

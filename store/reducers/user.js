@@ -1,6 +1,7 @@
-import { SET_USER_POSITION } from "../actions/user";
+import { SET_USER_POSITION, FETCH_ADDRESS } from "../actions/user";
 
 const initialState = {
+    address: null,
     userPosition: null
 }
 
@@ -9,7 +10,13 @@ const userReducer = (state = initialState, action) => {
        case SET_USER_POSITION: 
        console.log("setting user position:", action.userPosition)
             return {
+                ...state,
                 userPosition: {...action.userPosition}
+            }
+        case FETCH_ADDRESS:
+            return {
+                ...state,
+                address: action.address
             }
     }
     return state;

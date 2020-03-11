@@ -3,6 +3,7 @@ import { View, StyleSheet, Dimensions, ToastAndroid, Button, Modal, Text } from 
 import { useDispatch, useSelector } from 'react-redux';
 import MapView from 'react-native-maps';
 
+
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 
@@ -19,10 +20,10 @@ import * as userActions from '../store/actions/user';
 const Map = props => {
     console.log("Map component render")
     const [region, setRegion] = useState();
-    const [userPosition, setUserPosition] = useState();
+    const [margin, setMargin] = useState(0);
     const hydrants = useSelector(state => state.hydrants.hydrants)
     const dispatch = useDispatch();
-    
+
 
     const onRegionChange = (region) => {
         setRegion(region);
@@ -50,10 +51,6 @@ const Map = props => {
         await loadHydrants(location.coords.latitude, location.coords.longitude)
         dispatch(userActions.setUserPosition({latitude: location.coords.latitude, longitude: location.coords.longitude}));
         
-        setUserPosition({
-            latitude: location.coords.latitude,
-            longitude: location.coords.longitude,
-        });
         onRegionChange({
             longitude: location.coords.longitude,
             latitude: location.coords.latitude,
@@ -65,11 +62,14 @@ const Map = props => {
     useEffect(() => {
         _getLocationAsync();
     }, [dispatch, loadHydrants]);
-
+    const _onMapReady = () => setMargin({marginBottom: 0})
     return (
         <View style={styles.container}>
             <MapView
                 style={styles.mapStyle}
+                showsUserLocation
+                showsCompass
+                onMapReady={_onMapReady}
                 region={region}
             >
                 {hydrants.map(hydrant => {
@@ -84,10 +84,10 @@ const Map = props => {
                     />
                 })}
 
-                {userPosition ? <MapView.Marker
+                {/* {userPosition ? <MapView.Marker
                     coordinate={userPosition}
                     image={require('../assets/markers/blue-dot.png')}
-                /> : null}
+                /> : null} */}
             </MapView>
             <CircleButton
                 styles={{
