@@ -1,20 +1,24 @@
 import React from 'react';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import AppNavigation from './navigation/AppNavigation';
 import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
 import { enableScreens } from 'react-native-screens';
+import devToolsEnhancer from 'remote-redux-devtools';
 enableScreens();
 
 import hydrantsReducer from './store/reducers/hydrants';
 import usersReducer from './store/reducers/users';
 
+
 const rootReducer = combineReducers({
   hydrants: hydrantsReducer,
-  users: usersReducer
+  users: usersReducer,
 });
 
-const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
+const store = createStore(
+  rootReducer,
+  );
 
 export default function App() {
   return (
