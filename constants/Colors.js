@@ -9,5 +9,6 @@ export default Colors = {
     iosPurple: "rgb(175, 82, 222)",
     iosRed: "rgb(255, 59, 48)",
     iosTeal: "rgb(90, 200, 250)",
-    iosYellow: "rgb(255, 204, 0)"
+    iosYellow: "rgb(255, 204, 0)",
+    iosGrey: "rgb(142, 142, 147)"
 }

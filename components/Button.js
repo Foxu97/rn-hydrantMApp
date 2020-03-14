@@ -1,20 +1,39 @@
 import React from "react";
-import {TouchableOpacity, Text, View, StyleSheet} from 'react-native';
+import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 import Colors from "../constants/Colors";
+import { Ionicons } from '@expo/vector-icons';
 
 const Button = props => {
     return (
-        <TouchableOpacity style={{...styles.container, ...props.buttonStyle}}><Text style={{...styles.text, ...props.textStyle}}>{props.title}</Text></TouchableOpacity>
+        <TouchableOpacity
+            style={{ ...styles.container, ...props.buttonStyle }}
+            onPress={props.onButtonPress}
+        >
+            {props.iconName ?
+                <Ionicons
+                    name={props.iconName}
+                    style={{ ...styles.iconStyle, ...props.iconStyle }}
+                    size={props.iconSize || 24}
+                    color={Colors.iosBlue} /> : null}
+            <Text
+                style={{ ...styles.text, ...props.textStyle }}>
+                {props.title}
+            </Text>
+
+        </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         height: "100%",
-        width: "50%",
-        justifyContent: 'center',
+        flexDirection: "row",
+        justifyContent: "space-evenly",
         alignItems: "center",
-        backgroundColor: 'rgba(255,255,255,0.85)'
+        backgroundColor: 'rgba(255,255,255,0.85)',
+        borderTopColor: "#BABABA",
+        borderTopWidth: 1
     },
     text: {
         color: Colors.iosBlue,

@@ -8,7 +8,6 @@ const initialState = {
 const userReducer = (state = initialState, action) => {
     switch(action.type) {
        case SET_USER_POSITION: 
-       console.log("setting user position:", action.userPosition)
             return {
                 ...state,
                 userPosition: {...action.userPosition}

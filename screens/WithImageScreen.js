@@ -7,6 +7,10 @@ import ImagePicker from '../components/ImagePicker';
 
 const WithImageScreen = props => {
     const newHydrantLocation = useSelector(state => state.user.userPosition);
+    const goBackHandler = () => {
+        console.log(props.navigation)
+        props.navigation.navigate("Map");
+    }
     return (
         <View style={styles.container}>
             <MapView
@@ -39,7 +43,8 @@ const WithImageScreen = props => {
                     image={require('../assets/markers/hydrant.png')}
                 />
             </MapView>
-            <ImagePicker />
+            <ImagePicker 
+            goBack={goBackHandler}/>
         </View>
     );
 }
@@ -55,7 +60,7 @@ const styles = StyleSheet.create({
 })
 
 WithImageScreen.navigationOptions = {
-    headerTitle: "Add hydrant"
+    headerTitle: "Dodaj hydrant"
 }
 
 export default WithImageScreen;     

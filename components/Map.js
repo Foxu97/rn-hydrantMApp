@@ -84,10 +84,6 @@ const Map = props => {
                     />
                 })}
 
-                {/* {userPosition ? <MapView.Marker
-                    coordinate={userPosition}
-                    image={require('../assets/markers/blue-dot.png')}
-                /> : null} */}
             </MapView>
             <CircleButton
                 styles={{

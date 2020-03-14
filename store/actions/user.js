@@ -9,7 +9,6 @@ export const setUserPosition = (userPosition) => {
 }
 
 export const fetchAddress = (userPosition) => {
-    console.log("pos", userPosition)
     return async dispatch => {
         try {
             const response = await fetch(

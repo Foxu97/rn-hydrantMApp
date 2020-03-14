@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Colors from "../constants/Colors";
 import * as hydrantActions from '../store/actions/hydrants';
 import * as messageActions from '../store/actions/message';
+import { addMethod } from "../models/AddMethod";
 
 const AddingHydrantMethodDialog = props => {
     const dispatch = useDispatch();
@@ -31,7 +32,11 @@ const AddingHydrantMethodDialog = props => {
                     <Text style={styles.header}>Jak chcesz dodać hydrant?</Text>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={addHydrantPositionHandler}>
+                        onPress={() => {
+                            addHydrantPositionHandler() //this logic should not be there
+                            props.navigate(addMethod.LOCATION_ONLY) 
+                            }}>
+                        {/* onPress={() => {props.navigate(addMethod.WITH_IMAGE)}}> */}
                             <Ionicons name="md-locate" style={styles.iconStyle} size={24} color={Colors.iosBlue}/>
                         <Text
                             style={{
@@ -42,7 +47,7 @@ const AddingHydrantMethodDialog = props => {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.button}
-                        onPress={() => {props.navigation.navigate("WithImageScreen")} }>
+                        onPress={() => {props.navigate(addMethod.WITH_IMAGE)} }>
                         <Ionicons name="md-camera" style={styles.iconStyle} size={24} color={Colors.iosBlue}/>
                         <Text
                             style={{

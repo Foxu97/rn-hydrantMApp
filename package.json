@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.5",
-    "@react-navigation/native": "^5.0.9",
     "expo": "~36.0.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
@@ -22,13 +21,15 @@
     "react-native-safe-area-view": "^1.0.0",
     "react-native-screens": "2.0.0-alpha.12",
     "react-native-web": "~0.11.7",
+    "react-navigation": "4.2.2",
     "react-navigation-drawer": "^2.4.2",
     "react-navigation-header-buttons": "^3.0.5",
     "react-navigation-stack": "^2.2.2",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "expo-image-picker": "~8.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
