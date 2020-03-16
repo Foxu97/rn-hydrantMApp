@@ -7,20 +7,17 @@ import * as messageActions from './message';
 import { createFormData } from '../../utils/createFormData';
 
 
-export const fetchHydrants = (lat, lng) => {
+export const fetchHydrants = (lat, lng, showMessage = true) => {
     return async dispatch => {
         try {
-            const res = await fetch(`http://192.168.74.254:8081/hydrant/?latitude=${lat}&longitude=${lng}.json`);
+            const res = await fetch(`http://192.168.74.254:8081/hydrant/?latitude=${lat}&longitude=${lng}`);
             const json = await res.json();
+            dispatch({ type: SET_HYDRANTS, hydrants: json.data });
+            if (showMessage){
+                dispatch(messageActions.setMessage(json.message));
+            }
             if (!res.ok) {
                 throw new Error(json.message);
-            }
-
-            if (json.data){
-                dispatch({ type: SET_HYDRANTS, hydrants: json.data });
-                dispatch(messageActions.setMessage(json.message))
-            } else {
-                dispatch(messageActions.setMessage(json.message))
             }
         }
         catch (err) {
@@ -29,44 +26,21 @@ export const fetchHydrants = (lat, lng) => {
     }
 }
 
-export const addHydrantPosition = hydrantPosition => {
-    return async dispatch => {
-        try {
-            const response = await fetch(
-                'http://192.168.74.254:8081/hydrant',
-                {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(hydrantPosition)
-                }
-            );
-            const resData = await response.json();
-            console.log(resData.message)
-            if(response.ok){
-                dispatch({type: ADD_HYDRANT, hydrant: resData});
-            }
-            dispatch(messageActions.setMessage(resData.message));
-        } catch (err) {
-            console.log(err)
-            dispatch(messageActions.setMessage("error kurwa "))
-        }
-
-    }
-}
-export const addHydrantWithPhoto = (hydrantPosition, image) => {
+export const addHydrantWithPhoto = (hydrantPosition, image = null) => {
     return async dispatch => {
         try{
+            let reqBody = null;
+            if (image) {
+                reqBody = {body: createFormData(image)}
+            }
             const response = await fetch(
                 `http://192.168.74.254:8081/hydrant/?latitude=${hydrantPosition.latitude}&longitude=${hydrantPosition.longitude}`,
                 {
                     method: 'POST',
-                    body: createFormData(image)
+                    ...reqBody
                 }
             );
             const resData = await response.json()
-            //console.log(resData)
             dispatch(messageActions.setMessage(resData.message));
         } catch (err) {
             console.log(err)

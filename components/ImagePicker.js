@@ -41,14 +41,25 @@ const ImagePicker = props => {
             quality: 1
         });
         dispatch(hydrantActions.savePickedImageUri(image.uri)); 
-        //console.log("image:", image);
+        dispatch(hydrantActions.savePickedImage(image));
+    }
+
+    const chooseImageFromGallery = async () => {
+        const hasPermission = await verifyPermissions();
+        if(!hasPermission){
+            return;
+        }
+        const image = await ImgPicker.launchImageLibraryAsync({
+            mediaTypes: ImgPicker.MediaTypeOptions.Images
+        });
+        dispatch(hydrantActions.savePickedImageUri(image.uri));
         dispatch(hydrantActions.savePickedImage(image));
     }
 
     const uploadHydrantHandler = useCallback(async () => {
         try {
-            //console.log(savedImage)
             await dispatch(hydrantActions.addHydrantWithPhoto(userPosition, savedImage));
+            await dispatch(hydrantActions.fetchHydrants(userPosition.latitude, userPosition.longitude, false));
             //delete saved image
             dispatch(hydrantActions.savePickedImage(null));
             dispatch(hydrantActions.savePickedImageUri(null));
@@ -84,7 +95,8 @@ const ImagePicker = props => {
                <View style={styles.imageButtonsContainer}>
                <Button 
                     iconName="md-image"
-                    title={"Wybierz plik"} 
+                    title={"Wybierz plik"}
+                    onButtonPress={chooseImageFromGallery}
                 />
                 <Button
                     iconName="md-camera"

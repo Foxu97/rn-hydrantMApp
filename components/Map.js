@@ -18,61 +18,75 @@ import * as userActions from '../store/actions/user';
 
 
 const Map = props => {
-    console.log("Map component render")
+    console.log("Map component render");
     const [region, setRegion] = useState();
-    const [margin, setMargin] = useState(0);
     const hydrants = useSelector(state => state.hydrants.hydrants)
-    const dispatch = useDispatch();
+    const userPosition = useSelector(state => state.user.userPosition)
+    //const dispatch = useDispatch();
 
 
     const onRegionChange = (region) => {
         setRegion(region);
     }
 
-    const loadHydrants = useCallback(async (lat, lng) => {
-        try {
-            await dispatch(hydrantsActions.fetchHydrants(lat, lng))
-        }
-        catch (err) {
-            throw err
-        }
-    }, [dispatch])
+    // const loadHydrants = useCallback(async (lat, lng) => {
+    //     try {
+    //         await dispatch(hydrantsActions.fetchHydrants(lat, lng))
+    //     }
+    //     catch (err) {
+    //         throw err
+    //     }
+    // }, [dispatch])
 
-    const _getLocationAsync = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            ToastAndroid.show("Permission to access location was denied", ToastAndroid.LONG)
-        }
+    // const _getLocationAsync = async () => {
+    //     let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    //     if (status !== 'granted') {
+    //         ToastAndroid.show("Permission to access location was denied", ToastAndroid.LONG)
+    //     }
 
-        const location = await Location.getCurrentPositionAsync({
-            accuracy: 5
-        });
+    //     const location = await Location.getCurrentPositionAsync({
+    //         accuracy: 5
+    //     });
 
-        await loadHydrants(location.coords.latitude, location.coords.longitude)
-        dispatch(userActions.setUserPosition({latitude: location.coords.latitude, longitude: location.coords.longitude}));
+    //     await loadHydrants(location.coords.latitude, location.coords.longitude)
+    //     dispatch(userActions.setUserPosition({latitude: location.coords.latitude, longitude: location.coords.longitude}));
         
+    //     onRegionChange({
+    //         longitude: location.coords.longitude,
+    //         latitude: location.coords.latitude,
+    //         latitudeDelta: 0.0022,
+    //         longitudeDelta: 0.0021,
+    //     });
+
+    // };
+    // useEffect(() => {
+    //     _getLocationAsync();
+    // }, [dispatch, loadHydrants]);
+
+    useEffect(() => {
         onRegionChange({
-            longitude: location.coords.longitude,
-            latitude: location.coords.latitude,
+            longitude: userPosition?.longitude || 37.78825,
+            latitude: userPosition?.latitude || -122.4324,
             latitudeDelta: 0.0022,
             longitudeDelta: 0.0021,
         });
+    }, [userPosition])
 
-    };
-    useEffect(() => {
-        _getLocationAsync();
-    }, [dispatch, loadHydrants]);
-    const _onMapReady = () => setMargin({marginBottom: 0})
     return (
         <View style={styles.container}>
             <MapView
+                initialRegion={{
+                    latitude: 37.78825,
+                    longitude: -122.4324,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
                 style={styles.mapStyle}
                 showsUserLocation
                 showsCompass
-                onMapReady={_onMapReady}
                 region={region}
             >
-                {hydrants.map(hydrant => {
+                {hydrants?.map(hydrant => {
                     return <MapView.Marker
                         key={hydrant._id}
                         coordinate={{
@@ -94,7 +108,7 @@ const Map = props => {
                 }}
                 icon="md-locate"
                 iconSize={28}
-                onPressButton={_getLocationAsync}
+                onPressButton={props._getLocationAsync}
             />
         </View>
     );

@@ -8,7 +8,6 @@ import ImagePicker from '../components/ImagePicker';
 const WithImageScreen = props => {
     const newHydrantLocation = useSelector(state => state.user.userPosition);
     const goBackHandler = () => {
-        console.log(props.navigation)
         props.navigation.navigate("Map");
     }
     return (

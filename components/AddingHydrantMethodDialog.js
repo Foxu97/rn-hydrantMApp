@@ -11,20 +11,20 @@ import * as messageActions from '../store/actions/message';
 import { addMethod } from "../models/AddMethod";
 
 const AddingHydrantMethodDialog = props => {
-    const dispatch = useDispatch();
-    const userPosition = useSelector(state => state.user.userPosition);
+    // const dispatch = useDispatch();
+    // const userPosition = useSelector(state => state.user.userPosition);
     //const navigation = useNavigation();
 
-    const addHydrantPositionHandler = useCallback(async () => {
-        if (!userPosition) {
-            dispatch(messageActions.setMessage("Location not setted"));
-        }
-        try {
-            await dispatch(hydrantActions.addHydrantPosition(userPosition));
-        } catch (err) {
-             throw err 
-        }
-    }, [dispatch, userPosition]);
+    // const addHydrantPositionHandler = useCallback(async () => {
+    //     if (!userPosition) {
+    //         dispatch(messageActions.setMessage("Location not setted"));
+    //     }
+    //     try {
+    //         await dispatch(hydrantActions.addHydrantPosition(userPosition));
+    //     } catch (err) {
+    //          throw err 
+    //     }
+    // }, [dispatch, userPosition]);
 
     return (
             <View style={styles.dim}>
@@ -33,7 +33,7 @@ const AddingHydrantMethodDialog = props => {
                     <TouchableOpacity
                         style={styles.button}
                         onPress={() => {
-                            addHydrantPositionHandler() //this logic should not be there
+                            //addHydrantPositionHandler() //this logic should not be there
                             props.navigate(addMethod.LOCATION_ONLY) 
                             }}>
                         {/* onPress={() => {props.navigate(addMethod.WITH_IMAGE)}}> */}
