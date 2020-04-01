@@ -50,8 +50,14 @@ export const addHydrantWithPhoto = (hydrantPosition, image = null) => {
 }
 
 export const savePickedImageUri = imageUri => {
-    return {type: SAVE_PICKED_IMAGE_URI, imageUri: imageUri}
+    return {
+        type: SAVE_PICKED_IMAGE_URI,
+        imageUri
+        }
 }
 export const savePickedImage = image => {
-    return {type: SAVE_PICKED_IMAGE, image: image}
+    return {
+        type: SAVE_PICKED_IMAGE,
+        image
+    }
 }

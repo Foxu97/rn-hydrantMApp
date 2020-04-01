@@ -14,12 +14,14 @@ import Message from './components/Message';
 import hydrantsReducer from './store/reducers/hydrants';
 import userReducer from './store/reducers/user';
 import messageReducer from './store/reducers/message'
+import appReducer from './store/reducers/app'
 
 
 const rootReducer = combineReducers({
   hydrants: hydrantsReducer,
   user: userReducer,
-  message: messageReducer
+  message: messageReducer,
+  app: appReducer
 });
 
 const store = createStore(

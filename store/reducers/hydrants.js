@@ -1,4 +1,9 @@
-import { SET_HYDRANTS, ADD_HYDRANT, SAVE_PICKED_IMAGE, SAVE_PICKED_IMAGE_URI } from '../actions/hydrants';
+import {
+    SET_HYDRANTS,
+    SAVE_PICKED_IMAGE,
+    SAVE_PICKED_IMAGE_URI
+
+} from '../actions/hydrants';
 
 const initialState = {
     imageURI: null,
@@ -6,7 +11,7 @@ const initialState = {
     hydrants: []
 }
 
-const hydrantsReducer =  (state = initialState, action) => {
+const hydrantsReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_HYDRANTS:
             return {

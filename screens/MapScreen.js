@@ -12,6 +12,7 @@ import * as Permissions from 'expo-permissions';
 import * as hydrantsActions from '../store/actions/hydrants';
 import * as userActions from '../store/actions/user';
 import * as messageActions from '../store/actions/message';
+import * as appActions from '../store/actions/app';
 
 const MapScreen = props => {
     console.log("Map screen render");
@@ -35,6 +36,12 @@ const MapScreen = props => {
 
         await loadHydrants(location.coords.latitude, location.coords.longitude)
         dispatch(userActions.setUserPosition({latitude: location.coords.latitude, longitude: location.coords.longitude}));
+        dispatch(appActions.setMapRegion({
+            longitude: location.coords.longitude,
+            latitude: location.coords.latitude,
+            latitudeDelta: 0.0022,
+            longitudeDelta: 0.0021,
+        }));
     };
 
     const addHydrantPositionHandler = useCallback(async () => {
@@ -85,6 +92,7 @@ const MapScreen = props => {
             {useMemo(()=> (
                 <Map 
                     _getLocationAsync={_getLocationAsync}
+                    navigation={props.navigation}
                 />
             ), [hydrants])}
             {modalVisible ? <Suspense fallback={null}>

@@ -4,7 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 
 import MapScreen from '../screens/MapScreen';
 import WithImageScreen from '../screens/WithImageScreen';
-import PureMap from '../screens/PureMap';
+import HydrantCallout from '../screens/HydrantCallout';
 import Colors from '../constants/Colors';
 
 const defaultNavigationOptions = {
@@ -19,7 +19,9 @@ const defaultNavigationOptions = {
 const AppNavigator = createStackNavigator({
     Map: MapScreen,
     WithImageScreen: WithImageScreen,
-    PureMap: PureMap
+    HydrantHighlightsModal: HydrantCallout
+
 }, defaultNavigationOptions);
+
 
 export default createAppContainer(AppNavigator);

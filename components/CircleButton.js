@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
         height: 64,
         width: 64,
         borderRadius: 32,
-        backgroundColor: Colors.primary
+        backgroundColor: Colors.primary,
+        zIndex: 2
     }
 })
 
