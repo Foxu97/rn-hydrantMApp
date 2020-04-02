@@ -6,4 +6,3 @@ export const setMapRegion = (region) => {
         region
     }
 }
-

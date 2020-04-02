@@ -1,38 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, Dimensions, Button, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import HydrantsSatellitePreview from '../components/HydrantsSatellitePreview';
 import ImagePicker from '../components/ImagePicker';
+import Button from '../components/Button';
+import * as hydrantActions from '../store/actions/hydrants';
+
+import { getLocationAsync } from '../utils/getUserLocation';
 
 const HydrantCallout = props => {
+    const userPosition = useSelector(state => state.user.userPosition);
     const [hydrantImageName, setHydrantImageName] = useState();
     const [hydrant, setHydrant] = useState();
+    const imageToUpdate = useSelector(state => state.hydrants.imageToUpdate);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log("Hydrant Callout Modal");
         const hydrant = props.navigation.getParam('hydrant');
         if (hydrant.imagePath) {
             const imageName = hydrant.imagePath.split("/")[1];
-            console.log(imageName)
             setHydrantImageName(imageName)
         }
-        console.log(hydrant)
         setHydrant(hydrant);
-    }, [])
+    }, []);
+
+    const updateHydrantsImageHandler = useCallback(async () => {
+        try { 
+            const hydrantToAddLocation = await getLocationAsync();
+            await dispatch(hydrantActions.uploadHydrantImage(hydrantToAddLocation, imageToUpdate, hydrant._id));
+            await dispatch(hydrantActions.fetchHydrants(hydrantToAddLocation.latitude, hydrantToAddLocation.longitude, false));
+            props.navigation.navigate("Map");
+        } catch (err) {
+            console.log(err)
+        }
+    }, [dispatch, userPosition, imageToUpdate, hydrant]);
+
+
     if (!hydrant) return null;
     return (
         <View style={styles.container}>
-            <HydrantsSatellitePreview 
+            <HydrantsSatellitePreview
                 latitude={hydrant.latitude}
                 longitude={hydrant.longitude}
             />
             <View style={styles.header}>
                 <View style={styles.address}>
-                    <Text style={styles.headerText}>
-                        {hydrant.address.District}
+                    <Text style={styles.addressText}>
+                        {hydrant.address.District},
                         {' '}
                         {hydrant.address.Street}
                         {' '}
@@ -40,17 +56,28 @@ const HydrantCallout = props => {
                     </Text>
                 </View>
             </View>
-                <View style={styles.imageContainer}>
+            <View style={styles.imageContainer}>
                 {hydrant.imagePath ?
                     <Image
                         source={{ uri: `http://192.168.74.254:8081/images/${hydrantImageName}` }}
                         style={{ width: '100%', height: "100%" }}
-                        resizeMode="cover"
-                    /> : null}
-                </View> 
+                        resizeMode="contain"
+                    /> : <ImagePicker
+                        updateHydrant={true}
+                    />}
+            </View>
             <View style={styles.actions}>
-                <Button title="opcja1" onPress={() => { }} />
-                { !hydrant.imagePath ? <Button title="Dodaj zdjęcie" onPress={() => { }} /> : null }
+                {/* <Button title="opcja1" onPress={() => { }} /> */}
+                {(!hydrant.imagePath && imageToUpdate) ? <View style={styles.addHydrantButtonContainer}>
+                    <Button
+                        iconName="md-add"
+                        iconStyle={{ color: "white", marginRight: 18 }}
+                        buttonStyle={styles.addHydrantButton}
+                        textStyle={styles.addHydrantText}
+                        title={"Aktualizuj zdjęcie"}
+                        onButtonPress={updateHydrantsImageHandler}
+                    />
+                </View> : null}
             </View>
         </View>
     );
@@ -69,14 +96,25 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center'
     },
-    headerText: {
+    addressText: {
+        fontSize: 14,
+        fontWeight: "700",
         color: 'white',
         textAlign: 'center',
     },
     imageContainer: {
         flex: 2,
-        alignItems: 'center'
-    }
+    },
+    addHydrantButtonContainer: {
+        height: 48,
+    },
+    addHydrantButton: {
+        justifyContent: "center",
+        backgroundColor: Colors.primary,
+    },
+    addHydrantText: {
+        color: "white"
+    },
 });
 
 HydrantCallout.navigationOptions = {

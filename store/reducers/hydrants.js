@@ -1,14 +1,14 @@
 import {
     SET_HYDRANTS,
     SAVE_PICKED_IMAGE,
-    SAVE_PICKED_IMAGE_URI
+    SAVE_IMAGE_TO_UPDATE
 
 } from '../actions/hydrants';
 
 const initialState = {
-    imageURI: null,
     image: null,
-    hydrants: []
+    hydrants: [],
+    imageToUpdate: null
 }
 
 const hydrantsReducer = (state = initialState, action) => {
@@ -18,15 +18,15 @@ const hydrantsReducer = (state = initialState, action) => {
                 ...state,
                 hydrants: [...action.hydrants]
             }
-        case SAVE_PICKED_IMAGE_URI:
-            return {
-                ...state,
-                imageURI: action.imageUri
-            }
         case SAVE_PICKED_IMAGE:
             return {
                 ...state,
                 image: action.image
+            }
+        case SAVE_IMAGE_TO_UPDATE:
+            return {
+                ...state,
+                imageToUpdate: action.image
             }
     }
     return state;

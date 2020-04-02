@@ -1,73 +1,51 @@
-import React, { useCallback } from "react"; 
+import React from "react";
 import { View, TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
-//import { useNavigation } from '@react-navigation/native';
-
 
 import Colors from "../constants/Colors";
-import * as hydrantActions from '../store/actions/hydrants';
-import * as messageActions from '../store/actions/message';
 import { addMethod } from "../models/AddMethod";
 
 const AddingHydrantMethodDialog = props => {
-    // const dispatch = useDispatch();
-    // const userPosition = useSelector(state => state.user.userPosition);
-    //const navigation = useNavigation();
-
-    // const addHydrantPositionHandler = useCallback(async () => {
-    //     if (!userPosition) {
-    //         dispatch(messageActions.setMessage("Location not setted"));
-    //     }
-    //     try {
-    //         await dispatch(hydrantActions.addHydrantPosition(userPosition));
-    //     } catch (err) {
-    //          throw err 
-    //     }
-    // }, [dispatch, userPosition]);
-
     return (
-            <View style={styles.dim}>
-                <View style={styles.container}>
-                    <Text style={styles.header}>Jak chcesz dodać hydrant?</Text>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => {
-                            //addHydrantPositionHandler() //this logic should not be there
-                            props.navigate(addMethod.LOCATION_ONLY) 
-                            }}>
-                        {/* onPress={() => {props.navigate(addMethod.WITH_IMAGE)}}> */}
-                            <Ionicons name="md-locate" style={styles.iconStyle} size={24} color={Colors.iosBlue}/>
-                        <Text
-                            style={{
-                                ...styles.buttonText,
-                                color: Colors.iosBlue
-                            }}
-                        >Tylko lokalizacja</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => {props.navigate(addMethod.WITH_IMAGE)} }>
-                        <Ionicons name="md-camera" style={styles.iconStyle} size={24} color={Colors.iosBlue}/>
-                        <Text
-                            style={{
-                                ...styles.buttonText,
-                                color: Colors.iosBlue
-                            }}
-                        >Ze zdjęciem</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={ styles.button }
-                        onPress={() => { }}>
-                        <Ionicons name="md-images" style={styles.iconStyle} size={24} color={Colors.iosBlue}/>
-                        <Text
-                            style={{
-                                ...styles.buttonText,
-                                color: Colors.iosBlue
-                            }}
-                        >Zdjęcie EXIF</Text>
-                    </TouchableOpacity>
-                </View></View> 
+        <View style={styles.dim}>
+            <View style={styles.container}>
+                <Text style={styles.header}>Jak chcesz dodać hydrant?</Text>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                        props.navigate(addMethod.LOCATION_ONLY)
+                    }}>
+                    <Ionicons name="md-locate" style={styles.iconStyle} size={24} color={Colors.iosBlue} />
+                    <Text
+                        style={{
+                            ...styles.buttonText,
+                            color: Colors.iosBlue
+                        }}
+                    >Tylko lokalizacja</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => { props.navigate(addMethod.WITH_IMAGE) }}>
+                    <Ionicons name="md-camera" style={styles.iconStyle} size={24} color={Colors.iosBlue} />
+                    <Text
+                        style={{
+                            ...styles.buttonText,
+                            color: Colors.iosBlue
+                        }}
+                    >Ze zdjęciem</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => { }}>
+                    <Ionicons name="md-images" style={styles.iconStyle} size={24} color={Colors.iosBlue} />
+                    <Text
+                        style={{
+                            ...styles.buttonText,
+                            color: Colors.iosBlue
+                        }}
+                    >Zdjęcie EXIF</Text>
+                </TouchableOpacity>
+            </View></View>
     );
 
 }

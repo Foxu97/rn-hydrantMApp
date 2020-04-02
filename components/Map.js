@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Text } from 'react-native';
+import { View, StyleSheet, Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import MapView from 'react-native-maps';
 
@@ -9,10 +9,8 @@ import CircleButton from '../components/CircleButton';
 import * as appActions from '../store/actions/app';
 
 const Map = props => {
-    console.log("Map component render");
     const initialReg = useSelector(state => state.app.region);
     const hydrants = useSelector(state => state.hydrants.hydrants)
-
     const dispatch = useDispatch();
 
     return (
@@ -38,7 +36,6 @@ const Map = props => {
                         title={hydrant.address.Label}
                         image={require('../assets/markers/hydrant.png')}
                         onPress={() => {
-                            console.log('press');
                             props.navigation.navigate("HydrantHighlightsModal", {
                                 hydrant: hydrant
                             });

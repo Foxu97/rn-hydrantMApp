@@ -7,7 +7,7 @@ const HydrantsSatellitePreview = props => {
         <MapView
             style={styles.map}
             mapType={"hybrid"}
-            showsUserLocation={false}
+            showsUserLocation={true}
             followsUserLocation={true}
             showsMyLocationButton={true}
             showsCompass={false}
@@ -26,13 +26,13 @@ const HydrantsSatellitePreview = props => {
                 longitudeDelta: 0.0009,
             }}
         >
-            <MapView.Marker
+            {props.newHydrant ? null : <MapView.Marker
                 coordinate={{
                     latitude: props.latitude,
                     longitude: props.longitude,
                 }}
                 image={require('../assets/markers/hydrant.png')}
-            />
+            />}
         </MapView>
     )
 }

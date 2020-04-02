@@ -1,56 +1,46 @@
 import React, { useState, useMemo, Suspense, useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CircleButton from '../components/CircleButton'; 
 import Map from '../components/Map';
 import { addMethod } from '../models/AddMethod';
 
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
-
 import * as hydrantsActions from '../store/actions/hydrants';
 import * as userActions from '../store/actions/user';
 import * as messageActions from '../store/actions/message';
 import * as appActions from '../store/actions/app';
 
+
+import { getLocationAsync } from '../utils/getUserLocation';
+
 const MapScreen = props => {
-    console.log("Map screen render");
     const hydrants = useSelector(state => state.hydrants.hydrants);
     const userPosition = useSelector(state => state.user.userPosition);
     const [modalVisible, setModalVisible] = useState(false);
     const Dialog = React.lazy(() => import('../components/AddingHydrantMethodDialog'));
     const dispatch = useDispatch();
 
-
-
     const _getLocationAsync = async () => {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
-        if (status !== 'granted') {
-            ToastAndroid.show("Permission to access location was denied", ToastAndroid.LONG)
-        }
-
-        const location = await Location.getCurrentPositionAsync({
-            accuracy: 5
-        });
-
-        await loadHydrants(location.coords.latitude, location.coords.longitude)
-        dispatch(userActions.setUserPosition({latitude: location.coords.latitude, longitude: location.coords.longitude}));
+        const location = await getLocationAsync();
+        dispatch(userActions.setUserPosition({latitude: location.latitude, longitude: location.longitude}));
         dispatch(appActions.setMapRegion({
-            longitude: location.coords.longitude,
-            latitude: location.coords.latitude,
+            longitude: location.longitude,
+            latitude: location.latitude,
             latitudeDelta: 0.0022,
             longitudeDelta: 0.0021,
         }));
+        await loadHydrants(location.latitude, location.longitude);
     };
 
     const addHydrantPositionHandler = useCallback(async () => {
+        const newHydrantPosition = await getLocationAsync();
         if (!userPosition) {
             dispatch(messageActions.setMessage("Location not setted"));
         }
         try {
-            await dispatch(hydrantsActions.addHydrantWithPhoto(userPosition));
-            await loadHydrants(userPosition.latitude, userPosition.longitude, false)
+            await dispatch(hydrantsActions.addHydrantWithPhoto(newHydrantPosition));
+            await loadHydrants(newHydrantPosition.latitude, newHydrantPosition.longitude, false)
         } catch (err) {
              throw err 
         }
@@ -59,11 +49,9 @@ const MapScreen = props => {
     const addMethodHandler = (method) => {
         switch(method) {
             case addMethod.LOCATION_ONLY:
-                //toggleModal()
                 addHydrantPositionHandler();
                 break;
             case addMethod.WITH_IMAGE: 
-                
                 props.navigation.navigate("WithImageScreen");
                 break;
         }
