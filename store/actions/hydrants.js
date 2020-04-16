@@ -80,7 +80,7 @@ export const uploadHydrantImage = (userPosition, image, hydrantId) => {
             const response = await fetch(
                 `http://192.168.74.254:8081/hydrant/image`,
                 {
-                    method: 'POST',
+                    method: 'PUT',
                     ...reqBody
                 }
             );
