@@ -57,17 +57,15 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: 'center',
         alignItems: "center",
-        backgroundColor: "rgba(0,0,0, 0.75)"
+        backgroundColor: "rgba(0,0,0, 0.75)",
     },
     container: {
-
         display: 'flex',
         justifyContent: "space-around",
         alignItems: "center",
         height: 200,
         width: 300,
-        bottom: 100,
-        borderRadius: 12,
+        borderRadius: 16,
         padding: 8,
         backgroundColor: "rgba(255, 255, 255, 0.85)",
         elevation: 6

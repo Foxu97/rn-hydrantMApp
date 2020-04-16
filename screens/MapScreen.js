@@ -1,9 +1,11 @@
 import React, { useState, useMemo, Suspense, useCallback, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 
-import CircleButton from '../components/CircleButton'; 
+import HeaderButton from '../components/HeaderButton';
 import Map from '../components/Map';
+import NearestHydrantsContainer from '../components/NearestHydrantsContainer';
 import { addMethod } from '../models/AddMethod';
 
 import * as hydrantsActions from '../store/actions/hydrants';
@@ -70,6 +72,10 @@ const MapScreen = props => {
         const visibility = !modalVisible;
         setModalVisible(visibility);
     }
+    useEffect(() => {
+        props.navigation.setParams({toggleModal: toggleModal})
+        props.navigation.setParams({modalVisible})
+    }, [modalVisible]);
 
     useEffect(() => {
         _getLocationAsync();
@@ -88,16 +94,7 @@ const MapScreen = props => {
                     navigate={addMethodHandler}
                 />
             </Suspense> : null}
-            <CircleButton
-                styles={{
-                    bottom: 176
-                }}
-                icon={modalVisible ? "md-return-left" : "md-add"}
-                iconSize={34}
-                onPressButton={() => {
-                    toggleModal()
-                }}
-            />
+            <NearestHydrantsContainer />
         </View>
     )
 }
@@ -108,8 +105,20 @@ const styles = StyleSheet.create({
     }
 })
 
-MapScreen.navigationOptions = {
-    headerTitle: "Hydranty w pobliżu"
+MapScreen.navigationOptions = navData => {
+    const toggleModal = navData.navigation.getParam("toggleModal");
+    const modalVisible = navData.navigation.getParam("modalVisible");
+    return {
+        headerTitle: "Hydranty w pobliżu",
+        headerRight: () => (<HeaderButtons HeaderButtonComponent={HeaderButton}>
+         <Item 
+         title="Add new" 
+         iconName={modalVisible ? "md-return-left" : "md-add"}
+         onPress={() => {
+            toggleModal();
+         }}/>
+        </HeaderButtons>)
+    }
 }
 
 export default MapScreen;

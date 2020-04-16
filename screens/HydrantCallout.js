@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Colors from '../constants/Colors';
@@ -12,17 +12,12 @@ import { getLocationAsync } from '../utils/getUserLocation';
 
 const HydrantCallout = props => {
     const userPosition = useSelector(state => state.user.userPosition);
-    const [hydrantImageName, setHydrantImageName] = useState();
     const [hydrant, setHydrant] = useState();
     const imageToUpdate = useSelector(state => state.hydrants.imageToUpdate);
     const dispatch = useDispatch();
 
     useEffect(() => {
         const hydrant = props.navigation.getParam('hydrant');
-        if (hydrant.imagePath) {
-            const imageName = hydrant.imagePath.split("/")[1];
-            setHydrantImageName(imageName)
-        }
         setHydrant(hydrant);
     }, []);
 
@@ -57,9 +52,9 @@ const HydrantCallout = props => {
                 </View>
             </View>
             <View style={styles.imageContainer}>
-                {hydrant.imagePath ?
+                {hydrant.imageName ?
                     <Image
-                        source={{ uri: `http://192.168.74.254:8081/images/${hydrantImageName}` }}
+                        source={{ uri: `http://192.168.74.254:8081/images/${hydrant.imageName}` }}
                         style={{ width: '100%', height: "100%" }}
                         resizeMode="contain"
                     /> : <ImagePicker
@@ -67,7 +62,6 @@ const HydrantCallout = props => {
                     />}
             </View>
             <View style={styles.actions}>
-                {/* <Button title="opcja1" onPress={() => { }} /> */}
                 {(!hydrant.imagePath && imageToUpdate) ? <View style={styles.addHydrantButtonContainer}>
                     <Button
                         iconName="md-add"

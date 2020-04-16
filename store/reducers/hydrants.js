@@ -1,5 +1,6 @@
 import {
     SET_HYDRANTS,
+    SET_NEAREST_HYDRANTS,
     SAVE_PICKED_IMAGE,
     SAVE_IMAGE_TO_UPDATE
 
@@ -8,6 +9,7 @@ import {
 const initialState = {
     image: null,
     hydrants: [],
+    nearestHydrants: [],
     imageToUpdate: null
 }
 
@@ -18,6 +20,11 @@ const hydrantsReducer = (state = initialState, action) => {
                 ...state,
                 hydrants: [...action.hydrants]
             }
+        case SET_NEAREST_HYDRANTS:
+                return {
+                    ...state,
+                    nearestHydrants: [...action.nearestHydrants]
+                }
         case SAVE_PICKED_IMAGE:
             return {
                 ...state,
