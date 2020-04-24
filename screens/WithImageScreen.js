@@ -14,13 +14,15 @@ const WithImageScreen = props => {
     const newHydrantLocation = useSelector(state => state.user.userPosition);
     const savedImage = useSelector(state => state.hydrants.image);
     const address = useSelector(state => state.user.address);
+    const range = useSelector(state => state.hydrants.range);
+    const amount = useSelector(state => state.hydrants.amount);
     const dispatch = useDispatch();
 
     const uploadHydrantHandler = useCallback(async () => {
         try {
             const hydrantToAddLocation = await getLocationAsync();
             await dispatch(hydrantActions.addHydrantWithPhoto(hydrantToAddLocation, savedImage));
-            await dispatch(hydrantActions.fetchHydrants(newHydrantLocation.latitude, newHydrantLocation.longitude, false));
+            await dispatch(hydrantActions.fetchHydrants(newHydrantLocation.latitude, newHydrantLocation.longitude, range, amount, false));
             dispatch(hydrantActions.savePickedImage(null));
             props.navigation.navigate("Map");
         } catch (err) {

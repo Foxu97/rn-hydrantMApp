@@ -2,20 +2,22 @@ export const SET_HYDRANTS = "SET_HYDRANTS";
 export const SET_NEAREST_HYDRANTS = "SET_NEAREST_HYDRANTS";
 export const ADD_HYDRANT = "ADD_HYDRANT";
 export const SAVE_PICKED_IMAGE = "SAVE_PICKED_IMAGE";
-export const SAVE_IMAGE_TO_UPDATE = "SAVE_IMAGE_TO_UPDATE"
+export const SAVE_IMAGE_TO_UPDATE = "SAVE_IMAGE_TO_UPDATE";
+export const SET_RANGE = "SET_RANGE";
+export const SET_AMOUNT = "SET_AMOUNT";
 
 import * as messageActions from './message';
 import { createFormData } from '../../utils/createFormData';
 
 
-export const fetchHydrants = (lat, lng, showMessage = true) => {
+export const fetchHydrants = (lat, lng, range, amount, showMessage = true) => {
     return async dispatch => {
         try {
-            const res = await fetch(`http://192.168.74.254:8081/hydrant/?latitude=${lat}&longitude=${lng}`);
+            const res = await fetch(`http://192.168.74.254:8081/hydrant/?latitude=${lat}&longitude=${lng}&range=${range}`);
             const json = await res.json();
             dispatch({ type: SET_HYDRANTS, hydrants: json.data });
 
-            const nearestHydrants = await fetch(`http://192.168.74.254:8081/hydrant/nearest/?latitude=${lat}&longitude=${lng}&amount=10`) //chwilowo
+            const nearestHydrants = await fetch(`http://192.168.74.254:8081/hydrant/nearest/?latitude=${lat}&longitude=${lng}&range=${range}&amount=${amount}`) //chwilowo
             const nearestHydrantsJson = await nearestHydrants.json();
             dispatch({type: SET_NEAREST_HYDRANTS, nearestHydrants: nearestHydrantsJson.data});
             if (showMessage) {
@@ -90,5 +92,18 @@ export const uploadHydrantImage = (userPosition, image, hydrantId) => {
             console.log(err);
             dispatch(messageActions.setMessage(err.message));
         }
+    }
+}
+
+export const setRange = range => {
+    return {
+        type: SET_RANGE,
+        range
+    }
+}
+export const setAmount = amount => {
+    return {
+        type: SET_AMOUNT,
+        amount
     }
 }

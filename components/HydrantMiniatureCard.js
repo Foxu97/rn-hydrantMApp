@@ -5,13 +5,14 @@ import { withNavigation } from 'react-navigation';
 
 const HydrantMiniatureCard = props => {
     return (
-        <TouchableOpacity 
-        style={styles.container} 
-        onPress={ () => props.navigation.navigate("HydrantHighlightsModal", {
+        <TouchableOpacity
+            style={styles.container}
+            onPress={() => props.navigation.navigate("HydrantHighlightsModal", {
                 hydrant: props.hydrant
             })
-        }>
+            }>
             <View style={styles.header}>
+                <Text style={styles.index}>#{props.index}</Text>
                 <Text style={styles.headerText}>{props.street} {props.house}</Text>
                 <Text style={styles.headerText}>{props.distance}m</Text>
             </View>
@@ -49,6 +50,13 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '100%'
+    },
+    index: {
+        position: "absolute",
+        left: 4,
+        bottom: 4,
+        color: 'white',
+        fontSize: 12
     }
 });
 

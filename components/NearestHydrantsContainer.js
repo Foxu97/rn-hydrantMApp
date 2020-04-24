@@ -5,16 +5,16 @@ import HydrantMiniatureCard from './HydrantMiniatureCard';
 
 const NearestHydrantsContainer = props => {
     const nearestHydrants = useSelector(state => state.hydrants.nearestHydrants);
-
     if (nearestHydrants && nearestHydrants.length > 0) {
         return (
             <View style={styles.container}>
                 <FlatList
                     data={nearestHydrants}
                     horizontal
-                    renderItem={({ item }) => (
+                    renderItem={({ item, index }) => (
                         <HydrantMiniatureCard
                             id={item._id}
+                            index={++index}
                             hydrant={item}
                             imageName={item.imageName}
                             street={item.address.Street}

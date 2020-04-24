@@ -12,8 +12,10 @@ import { getLocationAsync } from '../utils/getUserLocation';
 
 const HydrantCallout = props => {
     const userPosition = useSelector(state => state.user.userPosition);
-    const [hydrant, setHydrant] = useState();
     const imageToUpdate = useSelector(state => state.hydrants.imageToUpdate);
+    const range = useSelector(state => state.hydrants.range);
+    const amount = useSelector(state => state.hydrants.amount);
+    const [hydrant, setHydrant] = useState();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -25,12 +27,12 @@ const HydrantCallout = props => {
         try { 
             const hydrantToAddLocation = await getLocationAsync();
             await dispatch(hydrantActions.uploadHydrantImage(hydrantToAddLocation, imageToUpdate, hydrant._id));
-            await dispatch(hydrantActions.fetchHydrants(hydrantToAddLocation.latitude, hydrantToAddLocation.longitude, false));
+            await dispatch(hydrantActions.fetchHydrants(hydrantToAddLocation.latitude, hydrantToAddLocation.longitude, range, amount, false));
             props.navigation.navigate("Map");
         } catch (err) {
             console.log(err)
         }
-    }, [dispatch, userPosition, imageToUpdate, hydrant]);
+    }, [dispatch, userPosition, imageToUpdate, hydrant, range, amount]);
 
 
     if (!hydrant) return null;

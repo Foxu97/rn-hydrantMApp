@@ -19,6 +19,8 @@ import { getLocationAsync } from '../utils/getUserLocation';
 const MapScreen = props => {
     const hydrants = useSelector(state => state.hydrants.hydrants);
     const userPosition = useSelector(state => state.user.userPosition);
+    const range = useSelector(state => state.hydrants.range);
+    const amount = useSelector(state => state.hydrants.amount);
     const [modalVisible, setModalVisible] = useState(false);
     const Dialog = React.lazy(() => import('../components/AddingHydrantMethodDialog'));
     const dispatch = useDispatch();
@@ -32,7 +34,7 @@ const MapScreen = props => {
             latitudeDelta: 0.0022,
             longitudeDelta: 0.0021,
         }));
-        await loadHydrants(location.latitude, location.longitude);
+        await loadHydrants(location.latitude, location.longitude, range, amount);
     };
 
     const addHydrantPositionHandler = useCallback(async () => {
@@ -42,11 +44,11 @@ const MapScreen = props => {
         }
         try {
             await dispatch(hydrantsActions.addHydrantWithPhoto(newHydrantPosition));
-            await loadHydrants(newHydrantPosition.latitude, newHydrantPosition.longitude, false)
+            await loadHydrants(newHydrantPosition.latitude, newHydrantPosition.longitude, range, amount, false)
         } catch (err) {
              throw err 
         }
-    }, [dispatch, userPosition]);
+    }, [dispatch, userPosition, range, amount]);
 
     const addMethodHandler = (method) => {
         switch(method) {
@@ -59,9 +61,9 @@ const MapScreen = props => {
         }
         toggleModal()
     }
-    const loadHydrants = useCallback(async (lat, lng, showMessage = true) => {
+    const loadHydrants = useCallback(async (lat, lng, range, amount, showMessage = true) => {
         try {
-            await dispatch(hydrantsActions.fetchHydrants(lat, lng, showMessage))
+            await dispatch(hydrantsActions.fetchHydrants(lat, lng, range, amount, showMessage))
         }
         catch (err) {
             throw err
@@ -117,7 +119,17 @@ MapScreen.navigationOptions = navData => {
          onPress={() => {
             toggleModal();
          }}/>
-        </HeaderButtons>)
+        </HeaderButtons>),
+        headerLeft: () => (
+            <HeaderButtons HeaderButtonComponent={HeaderButton}>
+         <Item 
+         title="Add new" 
+         iconName="ios-menu"
+         onPress={() => {
+            navData.navigation.toggleDrawer();
+         }}/>
+        </HeaderButtons>
+        )
     }
 }
 

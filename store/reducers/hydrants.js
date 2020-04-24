@@ -2,7 +2,9 @@ import {
     SET_HYDRANTS,
     SET_NEAREST_HYDRANTS,
     SAVE_PICKED_IMAGE,
-    SAVE_IMAGE_TO_UPDATE
+    SAVE_IMAGE_TO_UPDATE,
+    SET_RANGE,
+    SET_AMOUNT
 
 } from '../actions/hydrants';
 
@@ -10,7 +12,9 @@ const initialState = {
     image: null,
     hydrants: [],
     nearestHydrants: [],
-    imageToUpdate: null
+    imageToUpdate: null,
+    range: 2500,
+    amount: 10
 }
 
 const hydrantsReducer = (state = initialState, action) => {
@@ -35,8 +39,18 @@ const hydrantsReducer = (state = initialState, action) => {
                 ...state,
                 imageToUpdate: action.image
             }
+        case SET_RANGE:
+            return {
+                ...state,
+                range: action.range
+            }
+        case SET_AMOUNT:
+            return {
+                ...state,
+                amount: action.amount
+            }
+        default: return state;
     }
-    return state;
 }
 
 export default hydrantsReducer;
