@@ -7,7 +7,9 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import MapScreen from '../screens/MapScreen';
 import WithImageScreen from '../screens/WithImageScreen';
 import HydrantCallout from '../screens/HydrantCallout';
+import ExifUploaderScreen from '../screens/ExifUploaderScreen';
 import AppSettings from '../screens/AppSettings';
+import ImageBrowser from '../screens/ImageBrowser';
 import Colors from '../constants/Colors';
 
 const defaultNavigationOptions = {
@@ -28,7 +30,9 @@ const settingsNav = createStackNavigator({
 const AppNavigator = createStackNavigator({
     Map: MapScreen,
     WithImageScreen: WithImageScreen,
-    HydrantHighlightsModal: HydrantCallout
+    HydrantHighlightsModal: HydrantCallout,
+    ExifUploader: ExifUploaderScreen,
+    ImageBrowser: ImageBrowser
 
 }, defaultNavigationOptions);
 

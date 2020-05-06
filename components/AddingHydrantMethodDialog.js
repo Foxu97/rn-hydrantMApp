@@ -36,7 +36,9 @@ const AddingHydrantMethodDialog = props => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => { }}>
+                    onPress={() => {
+                        props.navigate(addMethod.EXIF)
+                    }}>
                     <Ionicons name="md-images" style={styles.iconStyle} size={24} color={Colors.iosBlue} />
                     <Text
                         style={{
@@ -57,12 +59,13 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: 'center',
         alignItems: "center",
-        backgroundColor: "rgba(0,0,0, 0.75)",
+        backgroundColor: "rgba(0,0,0, 0.75)"
     },
     container: {
         display: 'flex',
         justifyContent: "space-around",
         alignItems: "center",
+        top: -100,
         height: 200,
         width: 300,
         borderRadius: 16,

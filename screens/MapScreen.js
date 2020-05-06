@@ -58,6 +58,8 @@ const MapScreen = props => {
             case addMethod.WITH_IMAGE: 
                 props.navigation.navigate("WithImageScreen");
                 break;
+            case addMethod.EXIF:
+                props.navigation.navigate("ExifUploader");
         }
         toggleModal()
     }
