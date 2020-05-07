@@ -8,7 +8,6 @@ import * as hydrantsActions from '../store/actions/hydrants';
 import * as messageActions from '../store/actions/message';
 
 const ImageTile = props => {
-    //console.log(props.photo);
     const [selected, setSelected] = useState(false);
     const dispatch = useDispatch();
     const toggleSelectImage = () => {
@@ -22,7 +21,6 @@ const ImageTile = props => {
         const selectedStatus = selected;
         setSelected(!selectedStatus);
 
-        //props.toggleSelectImage(props.photo.item);
         dispatch(hydrantsActions.toggleExifImage(props.photo.item));
     }
     useEffect(() => {

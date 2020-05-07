@@ -16,8 +16,7 @@ const ExifUploaderScreen = props => {
   const dispatch = useDispatch();
 
   const uploadFiles = useCallback(async () => {
-    console.log("upload files handler")
-    dispatch(hydrantsActions.uploadExifImages(exifHydrants))
+    await dispatch(hydrantsActions.uploadExifImages(exifHydrants))
   }, [dispatch, exifHydrants])
 
 

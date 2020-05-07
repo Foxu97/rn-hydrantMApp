@@ -41,7 +41,6 @@ export const addHydrantWithPhoto = (hydrantPosition, image = null) => {
             let reqBody = null;
             if (image) {
                 reqBody = { body: createFormData(image, null) }
-                console.log('req body', reqBody)
             }
             const response = await fetch(
                 `http://192.168.74.254:8081/hydrant/?latitude=${hydrantPosition.latitude}&longitude=${hydrantPosition.longitude}`,
@@ -125,11 +124,9 @@ export const toggleExifImage = image => {
 }
 
 export const uploadExifImages = images => {
-    console.log("images:", images)
     return async dispatch => {
         try {
-            const reqBody = { body: createFormDataWithExifImages(images) }
-            console.log("reg body",reqBody)
+            const reqBody =  { body: createFormData(images)};
             const response = await fetch(
                 `http://192.168.74.254:8081/hydrant/exif`,
                 {
@@ -138,10 +135,10 @@ export const uploadExifImages = images => {
                 }
             );
             const resData = await response.json()
-            console.log(resData.data)
+            console.log(resData) // staty przyjda
             dispatch(messageActions.setMessage(resData.message));
         } catch (err) {
             console.log(err)
         }
     }
-}
+} 

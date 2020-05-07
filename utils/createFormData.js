@@ -1,31 +1,10 @@
 import { Platform } from 'react-native';
 
-export const createFormData = (photo, body) => {
-  let extenstion = photo.uri.split(".");
-  extenstion = extenstion[extenstion.length - 1];
-  let fileName = new Date().toISOString();
-  while (fileName.includes(":")) {
-    fileName = fileName.replace(":", "-")
-  }
+export const createFormData = (images, body) => {
   const data = new FormData();
-
-  data.append("image", {
-    name: fileName + "." + extenstion,
-    type: photo.type + "/" + extenstion,
-    uri:
-      Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "")
-  });
-  if (body) {
-    Object.keys(body).forEach(key => {
-      data.append(key, body[key]);
-    });
+  if (!images.length) {
+    images = [images];
   }
-  return data;
-};
-
-export const createFormDataWithExifImages = (images, body) => {
-  const data = new FormData();
-
   images.forEach(image => {
     let extenstion = image.uri.split(".");
     extenstion = extenstion[extenstion.length - 1];
@@ -35,7 +14,7 @@ export const createFormDataWithExifImages = (images, body) => {
     }
     data.append("image", {
       name: fileName + "." + extenstion,
-      type: image.mediaType + "/" + extenstion,
+      type: "image/" + extenstion,
       uri:
         Platform.OS === "android" ? image.uri : image.uri.replace("file://", "")
     });
