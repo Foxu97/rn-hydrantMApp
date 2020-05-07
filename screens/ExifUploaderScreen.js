@@ -1,14 +1,16 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import { View, Text, FlatList, StyleSheet, Dimensions } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 import Button from '../components/Button';
 import HeaderButton from '../components/HeaderButton';
 import ExifMiniature from '../components/ExifMiniature';
 import Colors from '../constants/Colors';
+
 import * as hydrantsActions from '../store/actions/hydrants';
+import * as uiActions from '../store/actions/ui';
 
 
 const ExifUploaderScreen = props => {
@@ -16,7 +18,9 @@ const ExifUploaderScreen = props => {
   const dispatch = useDispatch();
 
   const uploadFiles = useCallback(async () => {
-    await dispatch(hydrantsActions.uploadExifImages(exifHydrants))
+    dispatch(uiActions.setIsLoading(true));
+    await dispatch(hydrantsActions.uploadExifImages(exifHydrants));
+    dispatch(uiActions.setIsLoading(false));
   }, [dispatch, exifHydrants])
 
 
@@ -70,8 +74,6 @@ const styles = StyleSheet.create({
   buttonContainer: {
     height: 48
   }
-
-
 });
 
 ExifUploaderScreen.navigationOptions = navData => {

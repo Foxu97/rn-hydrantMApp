@@ -10,18 +10,20 @@ enableScreens();
 
 import AppNavigation from './navigation/AppNavigation';
 import Message from './components/Message';
+import LoadingSpinner from './components/LoadingSpinner';
 
 import hydrantsReducer from './store/reducers/hydrants';
 import userReducer from './store/reducers/user';
-import messageReducer from './store/reducers/message'
-import appReducer from './store/reducers/app'
-
+import messageReducer from './store/reducers/message';
+import appReducer from './store/reducers/app';
+import uiReducer from './store/reducers/ui';
 
 const rootReducer = combineReducers({
   hydrants: hydrantsReducer,
   user: userReducer,
   message: messageReducer,
-  app: appReducer
+  app: appReducer,
+  ui: uiReducer
 });
 
 const store = createStore(
@@ -34,6 +36,7 @@ export default function App() {
     <Provider store={store}>
       <View style={styles.container}>
         <AppNavigation />
+        <LoadingSpinner />
         <Message/>
       </View>
     </Provider>
