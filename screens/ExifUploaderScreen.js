@@ -15,13 +15,15 @@ import * as uiActions from '../store/actions/ui';
 
 const ExifUploaderScreen = props => {
   const exifHydrants = useSelector(state => state.hydrants.exifHydrantsImages);
+  const [imagesStatus, setImagesStatus] = useState();
   const dispatch = useDispatch();
 
   const uploadFiles = useCallback(async () => {
     dispatch(uiActions.setIsLoading(true));
-    await dispatch(hydrantsActions.uploadExifImages(exifHydrants));
+    const uploadStatus = await dispatch(hydrantsActions.uploadExifImages(exifHydrants));
+    setImagesStatus(uploadStatus);
     dispatch(uiActions.setIsLoading(false));
-  }, [dispatch, exifHydrants])
+  }, [dispatch, exifHydrants]);
 
 
   return (
@@ -29,6 +31,7 @@ const ExifUploaderScreen = props => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Wybrano: {exifHydrants.length}
         </Text></View>
+
       <View style={styles.grid}>
         {exifHydrants.length > 0 ?
           <FlatList
@@ -36,9 +39,12 @@ const ExifUploaderScreen = props => {
             numColumns={3}
             keyExtractor={item => item.id}
             renderItem={(item) => (
-              <ExifMiniature uri={item.item.uri} />
+              <ExifMiniature 
+                uri={item.item.uri}
+                status={imagesStatus ? imagesStatus.get(item.item.filename) : null}
+               />
             )}
-          /> : null}
+          /> : <View style={styles.noImagesChosenAlert}><Text>Nie wybrano plików.</Text></View>}
 
       </View>
       {exifHydrants.length > 0 ?
@@ -46,9 +52,18 @@ const ExifUploaderScreen = props => {
           <Button
             title="Wyślij pliki"
             iconName="md-cloud-upload"
+            iconStyle={{ color: "white" }}
+            buttonStyle={styles.addHydrantButton}
+            textStyle={styles.addHydrantText}
             onButtonPress={uploadFiles}
           />
-        </View> : null}
+        </View> : <View style={styles.buttonContainer}>
+          <Button
+            title="Wybierz pliki"
+            iconName="md-images"
+            onButtonPress={() => props.navigation.navigate('ImageBrowser')}
+          />
+        </View>}
     </View>
   )
 
@@ -73,7 +88,19 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     height: 48
-  }
+  },  
+  noImagesChosenAlert: {
+    alignSelf: 'center',
+    position: 'absolute',
+    top: '50%'
+  },
+  addHydrantButton: {
+    justifyContent: "center",
+    backgroundColor: Colors.primary,
+},
+addHydrantText: {
+    color: "white"
+},
 });
 
 ExifUploaderScreen.navigationOptions = navData => {

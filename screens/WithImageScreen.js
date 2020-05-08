@@ -65,7 +65,7 @@ const WithImageScreen = props => {
             <View style={styles.addHydrantButtonContainer}>
             <Button
                 iconName="md-add"
-                iconStyle={{ color: "white", marginRight: 18 }}
+                iconStyle={{ color: "white" }}
                 buttonStyle={styles.addHydrantButton}
                 textStyle={styles.addHydrantText}
                 title={"Dodaj hydrant"}

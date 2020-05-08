@@ -30,8 +30,8 @@ const ImageBrowser = props => {
         if (!permission) {
             return
         }
-        const album = await MediaLibrary.getAlbumAsync('Camera')
-        const photosTemp = await MediaLibrary.getAssetsAsync({ album: album })
+        const album = await MediaLibrary.getAlbumAsync('Camera');
+        const photosTemp = await MediaLibrary.getAssetsAsync({ album: album, first: 10000, sortBy:  [[ MediaLibrary.SortBy.default, false ]]});
         setAllPhotos(photosTemp.assets);
     }
 

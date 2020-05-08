@@ -134,9 +134,10 @@ export const uploadExifImages = images => {
                     ...reqBody
                 }
             );
-            const resData = await response.json()
-            console.log(resData) // staty przyjda
+            const resData = await response.json();
+            const imagesStatusMap = new Map(resData.details);
             dispatch(messageActions.setMessage(resData.message));
+            return imagesStatusMap
         } catch (err) {
             console.log(err)
         }

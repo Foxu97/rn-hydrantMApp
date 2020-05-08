@@ -28,11 +28,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "row",
-        justifyContent: "space-evenly",
+        justifyContent: "center",
         alignItems: "center",
         backgroundColor: 'rgba(255,255,255,0.85)',
         borderTopColor: "#BABABA",
         borderTopWidth: 1
+    },
+    iconStyle: {
+        marginRight: 8
     },
     text: {
         color: Colors.iosBlue,

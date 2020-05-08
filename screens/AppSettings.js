@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     },
     buttonWrapper: {
         height: 48,
-        alignSelf: 'flex-end',
+        width: '100%',
         marginTop: 'auto'
     }
 })
